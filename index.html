@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -11,8 +11,9 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh; /* Changed to min-height for better scrolling */
             margin: 0;
+            padding: 20px; /* Added padding for mobile screens */
         }
         .container {
             background-color: #ffffff;
@@ -20,10 +21,21 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             width: 400px;
+            max-width: 100%;
+        }
+        /* New Logo Styles */
+        .logo-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .logo-container img {
+            max-width: 250px; /* Controls logo size */
+            height: auto;
         }
         h2 {
             text-align: center;
             color: #333;
+            margin-top: 0;
         }
         .form-group {
             margin-bottom: 15px;
@@ -60,7 +72,7 @@
             padding: 15px;
             background-color: #e9ecef;
             border-radius: 5px;
-            display: none; /* Hidden by default */
+            display: none;
         }
         .result-item {
             margin-bottom: 8px;
@@ -84,6 +96,10 @@
 <body>
 
 <div class="container">
+    <div class="logo-container">
+        <img src="logo.png" alt="Chan Brothers Travel Logo">
+    </div>
+
     <h2>Refund Calculator</h2>
     
     <div class="form-group">
@@ -123,17 +139,14 @@
 </div>
 
 <script>
-    // Set Today's Date default value
     document.getElementById('todayDate').valueAsDate = new Date();
 
     function calculateRefund() {
-        // 1. Get Input Values
         const destination = document.getElementById('destination').value;
         const todayDateVal = document.getElementById('todayDate').value;
         const flightDateVal = document.getElementById('flightDate').value;
         const price = parseFloat(document.getElementById('ticketPrice').value);
 
-        // Validation
         if (!todayDateVal || !flightDateVal || isNaN(price) || price <= 0) {
             alert("Please fill in all fields correctly.");
             return;
@@ -141,8 +154,6 @@
 
         const today = new Date(todayDateVal);
         const flight = new Date(flightDateVal);
-
-        // 2. Calculate Days Until Flight
         const diffTime = flight - today; 
         const daysUntilFlight = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
@@ -151,30 +162,26 @@
             return;
         }
 
-        // 3. Determine Deposit Amount & Region Policy
         let deposit = 0;
-        let region = "asia_long_haul"; // Default policy group
+        let region = "asia_long_haul"; 
 
-        // Based on Section 2.2 of T&Cs
         if (destination === 'china') {
             deposit = 750;
             region = "china";
-        } else if (destination === 'tier2') { // Finland, Iceland, etc.
+        } else if (destination === 'tier2') {
             deposit = 2000; 
             region = "asia_long_haul";
         } else if (destination === 'south_america') {
             deposit = 4000;
             region = "asia_long_haul";
         } else {
-            deposit = 1000; // Others
+            deposit = 1000;
             region = "asia_long_haul";
         }
 
-        // 4. Calculate Cancellation Fee (Based on Section 4.2 of T&Cs)
         let cancellationFee = 0;
 
         if (region === "china") {
-            // CHINA TRAVEL CENTRE POLICY
             if (daysUntilFlight >= 35) {
                 cancellationFee = deposit;
             } else if (daysUntilFlight >= 15) {
@@ -185,7 +192,6 @@
                 cancellationFee = price;
             }
         } else {
-            // ASIA & LONG HAUL POLICY (Everything else)
             if (daysUntilFlight >= 35) {
                 cancellationFee = Math.max(0.25 * price, deposit);
             } else if (daysUntilFlight >= 15) {
@@ -197,18 +203,14 @@
             }
         }
 
-        // Ensure fee doesn't exceed price
         if (cancellationFee > price) cancellationFee = price;
 
-        // 5. Calculate Final Refund and Percentage
         const refundAmount = price - cancellationFee;
         let refundPercentage = (refundAmount / price) * 100;
         
-        // Ensure we don't display negative zero or weird decimals
         if (refundAmount < 0) refundAmount = 0;
         if (refundPercentage < 0) refundPercentage = 0;
 
-        // 6. Display Results
         document.getElementById('daysText').innerText = `Days until departure: ${daysUntilFlight} days`;
         document.getElementById('depositText').innerText = `Applicable Deposit Tier: SGD ${deposit}`;
         document.getElementById('feeText').innerText = `Cancellation Fee: SGD ${cancellationFee.toFixed(2)}`;
