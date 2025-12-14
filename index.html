@@ -11,9 +11,9 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh; /* Changed to min-height for better scrolling */
+            min-height: 100vh;
             margin: 0;
-            padding: 20px; /* Added padding for mobile screens */
+            padding: 20px;
         }
         .container {
             background-color: #ffffff;
@@ -23,14 +23,26 @@
             width: 400px;
             max-width: 100%;
         }
-        /* New Logo Styles */
+        /* Logo Styles */
         .logo-container {
             text-align: center;
             margin-bottom: 20px;
         }
         .logo-container img {
-            max-width: 250px; /* Controls logo size */
+            max-width: 250px;
             height: auto;
+        }
+        /* Disclaimer Banner Styles */
+        .disclaimer {
+            background-color: #fff3cd; /* Light yellow background */
+            color: #856404; /* Dark yellow/brown text */
+            border: 1px solid #ffeeba;
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            font-size: 13px;
+            line-height: 1.4;
+            text-align: center;
         }
         h2 {
             text-align: center;
@@ -98,6 +110,10 @@
 <div class="container">
     <div class="logo-container">
         <img src="logo.jpg" alt="Chan Brothers Travel Logo">
+    </div>
+
+    <div class="disclaimer">
+        <strong>Note:</strong> This refund calculator has yet to undergo robust testing and is just a demo to show the concept. Prior to actual deployment, there will be a need for more robust testing.
     </div>
 
     <h2>Refund Calculator</h2>
